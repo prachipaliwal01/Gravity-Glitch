@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravity Glitch — Cyber Runner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-container">
+    <div class="scanlines"></div>
+
+    <div id="ui">
+        <!-- Left HUD Group -->
+        <div class="hud-group">
+            <div class="stat-card">
+                <span class="stat-label">Lives</span>
+                <div class="lives-container" id="livesContainer">
+                    <span class="heart"></span>
+                    <span class="heart"></span>
+                    <span class="heart"></span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">Gravity</span>
+                <span id="gravityBadge" class="gravity-badge normal">▼ NORMAL</span>
+            </div>
+
+            <div class="stat-card" id="levelCard">
+                <div class="level-hud-inner">
+                    <div class="level-hud-header">
+                        <span class="stat-label">Sector</span>
+                        <span id="levelBadge" class="level-pill">LVL 1</span>
+                    </div>
+                    <div class="level-progress-track">
+                        <div id="levelProgressFill" class="level-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right HUD Group -->
+        <div class="hud-group">
+            <div class="stat-card">
+                <span class="stat-label">Score</span>
+                <span class="stat-value" id="score">0</span>
+                <span id="scoreMultiplier" class="multiplier-tag">1.0x</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">Best</span>
+                <span class="stat-value" id="highScore">0</span>
+            </div>
+
+            <button class="audio-btn" id="audioToggle" onclick="toggleAudio()">🔊 SFX: ON</button>
+        </div>
+    </div>
+
+    <!-- Dynamic Banners -->
+    <div id="glitchNotification">GRAVITY FLIPPED!</div>
+    
+    <div id="levelUpBanner" class="level-up-banner">
+        <div class="banner-title" id="bannerLevelTitle">LEVEL 2 // CYBER SURGE</div>
+        <div class="banner-subtitle" id="bannerLevelSub">SPEED & DANGER INCREASED • MULTIPLIER 1.3x</div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover" class="modal">
+        <h1>SYSTEM FAILURE</h1>
+        <p style="color: #8da4c4; margin-bottom: 16px; font-size: 13px;">Terminal crash detected in gravity grid.</p>
+        
+        <div class="score-row">
+            <span class="label">FINAL SCORE</span>
+            <span class="val" id="finalScore">0</span>
+        </div>
+        <div class="score-row">
+            <span class="label">MAX SECTOR LEVEL</span>
+            <span class="val" id="modalMaxLevel" style="color: #66fcf1;">LVL 1 - BOOT GRID</span>
+        </div>
+        <div class="score-row">
+            <span class="label">NEAR MISS DODGES</span>
+            <span class="val" id="modalNearMisses" style="color: #ffd166;">0</span>
+        </div>
+        <div class="score-row">
+            <span class="label">RECORD SCORE</span>
+            <span class="val high" id="modalHighScore">0</span>
+        </div>
+
+        <button class="btn-primary" onclick="resetGame()">
+            <span>⚡ REBOOT SYSTEM</span>
+        </button>
+    </div>
+
+    <!-- Start Screen Modal -->
+    <div id="startModal" class="modal" style="display: block;">
+        <div class="start-logo">
+            <h1 class="glow-title">GRAVITY GLITCH</h1>
+            <div class="start-subtitle">CYBER RUNNER // QUANTUM OVERDRIVE</div>
+        </div>
+
+        <div class="instructions-card">
+            <div class="inst-row">
+                <span class="inst-key">SPACE / ↑ / W / CLICK</span>
+                <span class="inst-desc">Standard Rail Jump</span>
+            </div>
+            <div class="inst-row highlight">
+                <span class="inst-key">PRESS JUMP TWICE</span>
+                <span class="inst-desc">⚡ DOUBLE HIGH JUMP (Clears Level 4 Hazards)</span>
+            </div>
+            <div class="inst-row">
+                <span class="inst-key">CYBER PORTALS</span>
+                <span class="inst-desc">Invert Gravity (Floor ⇄ Ceiling)</span>
+            </div>
+            <div class="inst-row">
+                <span class="inst-key">NEAR MISS</span>
+                <span class="inst-desc">Graze hazards closely for score bonuses</span>
+            </div>
+        </div>
+
+        <div class="score-row">
+            <span class="label">ALL-TIME RECORD</span>
+            <span class="val high" id="startHighScore">0</span>
+        </div>
+
+        <button class="btn-primary start-btn" id="startBtn" onclick="startGame()">
+            <span>⚡ INITIATE RUN</span>
+        </button>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pauseModal" class="modal">
+        <h1>GRID PAUSED</h1>
+        <p style="color: #8da4c4; margin-bottom: 24px; font-size: 14px;">Neural runner suspended.</p>
+        <button class="btn-primary" onclick="togglePause()">RESUME RUN</button>
+    </div>
+
+    <canvas id="gameCanvas" width="920" height="520"></canvas>
+</div>
+
+<div id="instructions">
+    <span>Jump: <span class="key-badge">SPACE</span> / <span class="key-badge">↑</span> / <span class="key-badge">W</span> / <span class="key-badge">CLICK</span></span>
+    <span>Press Twice: <span style="color: #ffd166; font-weight: bold;">⚡ DOUBLE HIGH JUMP</span></span>
+    <span>Dodge closely for <span style="color: #66fcf1; font-weight: bold;">NEAR MISS</span> bonus</span>
+    <span>Pause: <span class="key-badge">P</span> / <span class="key-badge">ESC</span></span>
+    <span>Quick Restart: <span class="key-badge">R</span></span>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
