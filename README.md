@@ -5,7 +5,7 @@ Gravity Glitch is a browser-based 2D cyber runner game where players navigate a 
 ## How to Run
 
 1. Download or clone this repository to your local computer.
-2. Double-click the `gravity_glitch.html` file to open it in any modern web browser (such as Chrome, Edge, or Firefox).
+2. Double-click the `index.html` file to open it in any modern web browser (such as Chrome, Edge, or Firefox).
 3. Click the "INITIATE RUN" button on the main menu to start playing.
 
 ## Controls
